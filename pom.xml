@@ -18,6 +18,12 @@
         <module>version</module>
     </modules>
 
+    <scm>
+        <connection>scm:git:git://github.com/tomansill/javautility.git</connection>
+        <developerConnection>scm:git:ssh://github.com:tomansill/javautility.git</developerConnection>
+        <url>https://github.com/tomansill/javautility/tree/master</url>
+    </scm>
+
     <distributionManagement>
         <repository>
             <id>ossrh</id>
