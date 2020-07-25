@@ -7,7 +7,8 @@
     <groupId>com.ansill.utility</groupId>
     <artifactId>utility-all</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
+    <!-- mvn versions:set -DnewVersion=new_version -->
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Library that contains common and convenient functions and classes</description>
