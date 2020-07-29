@@ -24,6 +24,7 @@ By Tom Ansill
   - `toMap()` - Convenience function of `Collectors.toMap(K,V)` if you are already streaming `Map.Entry<K,V>`. Equivalent to `Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue)`.
   - `toConcurrentMap()` - Same as `toMap()` but as `ConcurrentMap`.
 - `function/*` - Package of lambda functions
+  - `RunnableWithException` - Variant of `Runnable` that throws `Exception`.
   - `ConsumerWithException` - Variant of `Consumer` that throws `Exception`. 
   - `FunctionWithException` - Variant of `Function` that throws `Exception`. 
   - `SupplierWithException` - Variant of `Supplier` that throws `Exception`.
