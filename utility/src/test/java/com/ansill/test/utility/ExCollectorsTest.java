@@ -7,10 +7,12 @@ import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 import static com.ansill.utility.Utility.generateString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExCollectorsTest{
 
@@ -84,6 +86,9 @@ class ExCollectorsTest{
                                            .stream()
                                            .filter(Map.Entry::getValue)
                                            .collect(ExCollectors.toConcurrentMap());
+
+    // Ensure that it's a concurrent map
+    assertTrue(shortcut instanceof ConcurrentMap);
 
     // Compare
     assertEquals(full, shortcut);

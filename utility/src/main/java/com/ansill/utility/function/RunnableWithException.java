@@ -1,4 +1,4 @@
-package com.ansill.utility.lambda;
+package com.ansill.utility.function;
 
 @FunctionalInterface
 public interface RunnableWithException{

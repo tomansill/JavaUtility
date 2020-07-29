@@ -17,7 +17,6 @@
     <modules>
         <module>utility</module>
         <module>version</module>
-        <module>lambda</module>
     </modules>
 
     <scm>

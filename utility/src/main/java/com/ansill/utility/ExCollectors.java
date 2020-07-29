@@ -13,6 +13,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+/** Stolen a lot of stuff from original Collector to just implement new toMap and toConcurrentMap */
 public final class ExCollectors{
 
   private static final Set<Collector.Characteristics> CH_ID
