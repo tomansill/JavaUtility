@@ -245,7 +245,7 @@ public final class Utility{
 
     // Set up characterset
     String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    String fullAlphabetSet = alphabet + alphabet.toLowerCase() + "123456789";
+    String fullAlphabetSet = alphabet + alphabet.toLowerCase() + "0123456789";
 
     // Set up random generator
     Random random = getRandom();
