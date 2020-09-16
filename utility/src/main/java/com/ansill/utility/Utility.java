@@ -234,13 +234,15 @@ public final class Utility{
   /**
    * Generates string with random characters of specified length
    *
-   * @param length length of string
+   * @param length          length of string
+   * @param randomGenerator random generator used to generate the string
    * @return randomized string up to specified length
    */
   @Nonnull
   public static String generateString(@Nonnull Random randomGenerator, @Nonnegative long length){
 
     // Check length
+    Validation.assertNonnull(randomGenerator, "randomGenerator");
     Validation.assertNaturalNumber(length, "length");
 
     // Set up characterset
