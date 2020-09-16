@@ -14,6 +14,7 @@ By Tom Ansill
   - `simpleToString(Object)` - `toString()` implementation for the lazy. It will create a string with class name and its fields. Example: MyDogClass(name="fido", color="Brown", age=1). In `toString()` of your classes, you just put `Utility.simpleToString(this)`. 
   - `sensibleToString(Object object)` - Simply adds double quotation marks between a String if input `Object` is a string, otherwise, returns `toString()` of non-`String` object. This function help to solve my minor beef with `String`'s `toString()` implementation where one can easily confuse with `null` or `"null"` when object automatically gets converted to String in like `System.out.println("Hello " + nullableString)`. 
   - `generateString(long)` - Generates a random sequence of string. The characters in the random string will be alphanumeric `[a-zA-z0-9]`.
+  - `generateString(Random, long)` - Generates a random sequence of string with provided random generator. The characters in the random string will be alphanumeric `[a-zA-z0-9]`.
   
 - `ResourceUtility` - Collection of functions related to reading resources within `.jar` files.
   - `getAllFilesInResource(Class<?>,String,boolean)` - Scans all resources inside `.jar` file that owns the input `Class<?>` and outputs a `Set<String>` of path of resources.

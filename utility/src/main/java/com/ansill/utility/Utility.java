@@ -238,7 +238,7 @@ public final class Utility{
    * @return randomized string up to specified length
    */
   @Nonnull
-  public static String generateString(@Nonnegative long length){
+  public static String generateString(@Nonnull Random randomGenerator, @Nonnegative long length){
 
     // Check length
     Validation.assertNaturalNumber(length, "length");
@@ -247,18 +247,26 @@ public final class Utility{
     String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     String fullAlphabetSet = alphabet + alphabet.toLowerCase() + "0123456789";
 
-    // Set up random generator
-    Random random = getRandom();
-
     // Set up string builder
     StringBuilder sb = new StringBuilder();
 
     // Build random string
     LongStream.range(0, length)
-              .forEach(i -> sb.append(fullAlphabetSet.charAt(random.nextInt(fullAlphabetSet.length()))));
+              .forEach(i -> sb.append(fullAlphabetSet.charAt(randomGenerator.nextInt(fullAlphabetSet.length()))));
 
     // Return the string
     return sb.toString();
 
+  }
+
+  /**
+   * Generates string with random characters of specified length
+   *
+   * @param length length of string
+   * @return randomized string up to specified length
+   */
+  @Nonnull
+  public static String generateString(@Nonnegative long length){
+    return generateString(getRandom(), length);
   }
 }
