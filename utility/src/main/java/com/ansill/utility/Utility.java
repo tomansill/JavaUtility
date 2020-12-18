@@ -7,8 +7,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Modifier;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
@@ -21,6 +29,29 @@ public final class Utility{
 
   /** Hex array */
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+
+  /** Class for unmodifiable map class created by Collections.unmodifiableMap(Map<K,V>) */
+  @Nonnull
+  private static final Class<?> UNMODIFIABLE_MAP_CLASS;
+
+  /** Class for unmodifiable set class created by Collections.unmodifiableSet(Set<V>) */
+  @Nonnull
+  private static final Class<?> UNMODIFIABLE_SET_CLASS;
+
+  /** Class for unmodifiable list class created by Collections.unmodifiableList(List<V>) */
+  @Nonnull
+  private static final Class<?> UNMODIFIABLE_LIST_CLASS;
+
+  /** Class for unmodifiable list class created by Collections.unmodifiableSet(List<V>) that's for special list classes like ArrayList */
+  @Nonnull
+  private static final Class<?> UNMODIFIABLE_RANDOM_ACCESS_LIST_CLASS;
+
+  static{
+    UNMODIFIABLE_MAP_CLASS = Collections.unmodifiableMap(new HashMap<>()).getClass();
+    UNMODIFIABLE_SET_CLASS = Collections.unmodifiableSet(new HashSet<>()).getClass();
+    UNMODIFIABLE_LIST_CLASS = Collections.unmodifiableList(new LinkedList<>()).getClass();
+    UNMODIFIABLE_RANDOM_ACCESS_LIST_CLASS = Collections.unmodifiableList(new ArrayList<>()).getClass();
+  }
 
   /**
    * Private constructor
@@ -270,5 +301,105 @@ public final class Utility{
   @Nonnull
   public static String generateString(@Nonnegative long length){
     return generateString(getRandom(), length);
+  }
+
+  /**
+   * Behaves same as Collections.unmodifiableMap(Map) but this function will simply return if input map is already an unmodifiable map instead of wrapping it again
+   *
+   * @param originalMap original map
+   * @param <K>         key type of map
+   * @param <V>         value type of map
+   * @return unmodifiable map
+   */
+  @Nonnull
+  public static <K, V> Map<K,V> unmodifiableMap(@Nonnull Map<K,V> originalMap){
+    if(originalMap.getClass().equals(UNMODIFIABLE_MAP_CLASS)) return originalMap;
+    return Collections.unmodifiableMap(originalMap);
+  }
+
+  /**
+   * Behaves same as Collections.unmodifiableSet(Set) but this function will simply return if input set is already an unmodifiable set instead of wrapping it again
+   *
+   * @param originalSet original set
+   * @param <V>         value type of set
+   * @return unmodifiable set
+   */
+  @Nonnull
+  public static <V> Set<V> unmodifiableSet(@Nonnull Set<V> originalSet){
+    if(originalSet.getClass().equals(UNMODIFIABLE_SET_CLASS)) return originalSet;
+    return Collections.unmodifiableSet(originalSet);
+  }
+
+  /**
+   * Behaves same as Collections.unmodifiableList(Set) but this function will simply return if input list is already an unmodifiable list instead of wrapping it again
+   *
+   * @param originalList original list
+   * @param <V>          value type of list
+   * @return unmodifiable list
+   */
+  @Nonnull
+  public static <V> List<V> unmodifiableList(@Nonnull List<V> originalList){
+    if(originalList.getClass().equals(UNMODIFIABLE_LIST_CLASS) || originalList.getClass().equals(
+      UNMODIFIABLE_RANDOM_ACCESS_LIST_CLASS)) return originalList;
+    return Collections.unmodifiableList(originalList);
+  }
+
+  /**
+   * Unites multiple sets together, will re-use any one of set if all other sets are empty
+   *
+   * @param originalSet original set
+   * @param otherSet    other set
+   * @param moreSet     list of additional set
+   * @param <V>         value type of set
+   * @return united set
+   */
+  @SafeVarargs
+  @Nonnull
+  public static <V> Set<V> union(@Nonnull Set<V> originalSet, @Nonnull Set<V> otherSet, @Nonnull Set<V>... moreSet){
+    long nonEmptys = Arrays.stream(moreSet).filter(item -> !item.isEmpty()).count();
+    if(nonEmptys == 0 && otherSet.isEmpty()) return originalSet;
+    if(nonEmptys == 0 && originalSet.isEmpty()) return otherSet;
+    if(nonEmptys == 1 && originalSet.isEmpty() && otherSet.isEmpty()){
+      return Arrays.stream(moreSet)
+                   .filter(item -> !item.isEmpty())
+                   .findAny()
+                   .orElseThrow(() -> new RuntimeException("count failed"));
+    }
+    Set<V> newSet = new HashSet<>(originalSet);
+    newSet.addAll(otherSet);
+    Arrays.stream(moreSet).forEach(newSet::addAll);
+    return newSet;
+  }
+
+  /**
+   * Unites multiple sets together, will re-use any one of set if all other sets are empty, then returns as unmodifiable set
+   *
+   * @param originalSet original set
+   * @param otherSet    other set
+   * @param moreSet     list of additional set
+   * @param <V>         value type of set
+   * @return unmodifiable united set
+   */
+  @SafeVarargs
+  @Nonnull
+  public static <V> Set<V> unmodifiableSet(
+    @Nonnull Set<V> originalSet,
+    @Nonnull Set<V> otherSet,
+    @Nonnull Set<V>... moreSet
+  ){
+    return unmodifiableSet(union(originalSet, otherSet, moreSet));
+  }
+
+  /**
+   * Behaves same as Arrays.asList(V...)  but for set
+   *
+   * @param items items
+   * @param <V>   value type of set
+   * @return set
+   */
+  @SafeVarargs
+  @Nonnull
+  public static <V> Set<V> asSet(@Nonnull V... items){
+    return new HashSet<>(Arrays.asList(items));
   }
 }
